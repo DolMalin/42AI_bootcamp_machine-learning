@@ -6,7 +6,7 @@
 #    By: pdal-mol <dolmalinn@gmail.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/12 10:54:32 by pdal-mol          #+#    #+#              #
-#    Updated: 2022/04/12 16:10:04 by pdal-mol         ###   ########.fr        #
+#    Updated: 2022/04/12 17:37:36 by pdal-mol         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ class Matrix:
 			assert len(input) == 2
 			assert isinstance(input[0], int) and isinstance(input[1], int)
 			self.shape = input
-			self.data = [[0.0] * input[1]] * input[0]
+			self.data = [[0 for x in range (input[0])] for y in range (input[1])]
 		elif (isinstance(input, list)):
 			for lst in input:
 				assert len(input[0]) == len(lst)
@@ -64,7 +64,7 @@ class Matrix:
 		return Matrix(result)
 
 	__rtruediv__ = __truediv__
-			
+
 	def __mul__(self, other):
 		if isinstance(other, int) or isinstance(other, float):
 			result = self.data
@@ -73,14 +73,13 @@ class Matrix:
 					result[i][j] = self.data[i][j] * other
 			return Matrix(result)
 		elif isinstance(other, type(self)):
-			result = [[0.0] * self.shape[0]] * other.shape[1]
-			for i in range (self.shape[1]):
-				for j in range(other.shape[0]):
-					result[i][j] += self.data[j][i] * other.data[i][j]
+			result = [[0 for x in range (self.shape[0])] for y in range (other.shape[1])]
+			for i in range (self.shape[0]):
+				for j in range(other.shape[1]):
+					row = self.data[i]
+					col = [other.data[x][j] for x in range(len(other.data))]
+					result[i][j] = sum(x*y for x, y in zip(row, col)) 
 			return (Matrix(result))
-
-		
-			
 	
 	def T(self):
 		self.shape = (self.shape[1], self.shape[0])
