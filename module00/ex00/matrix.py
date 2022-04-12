@@ -6,7 +6,7 @@
 #    By: pdal-mol <dolmalinn@gmail.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/12 10:54:32 by pdal-mol          #+#    #+#              #
-#    Updated: 2022/04/12 14:40:47 by pdal-mol         ###   ########.fr        #
+#    Updated: 2022/04/12 16:10:04 by pdal-mol         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,20 +36,60 @@ class Matrix:
 		return Matrix(result)
 	
 	__radd__ = __add__
+	
+	def __sub__(self, other):
+		assert isinstance(other, type(self))
+		assert self.shape == other.shape
+		result = self.data
+		for i in range (len(self.data)):
+			for j in range (self.shape[1]):
+				result[i][j] = self.data[i][j] - other.data[i][j]
+		return Matrix(result)
 
+	def __rsub__(self, other):
+		assert isinstance(other, type(self))
+		assert self.shape == other.shape
+		result = self.data
+		for i in range (len(self.data)):
+			for j in range (self.shape[1]):
+				result[i][j] = other.data[i][j] - self.data[i][j]
+		return Matrix(result)
+
+	def __truediv__(self, other):
+		assert isinstance(other, int) or isinstance(other, float)
+		result = self.data
+		for i in range (len(self.data)):
+			for j in range (self.shape[1]):
+				result[i][j] = self.data[i][j] / other
+		return Matrix(result)
+
+	__rtruediv__ = __truediv__
 			
+	def __mul__(self, other):
+		if isinstance(other, int) or isinstance(other, float):
+			result = self.data
+			for i in range (len(self.data)):
+				for j in range (self.shape[1]):
+					result[i][j] = self.data[i][j] * other
+			return Matrix(result)
+		elif isinstance(other, type(self)):
+			result = [[0.0] * self.shape[0]] * other.shape[1]
+			for i in range (self.shape[1]):
+				for j in range(other.shape[0]):
+					result[i][j] += self.data[j][i] * other.data[i][j]
+			return (Matrix(result))
+
+		
+			
+	
 	def T(self):
 		self.shape = (self.shape[1], self.shape[0])
 		self.data = [list(row) for row in (zip(*self.data))]
 		return self
 
-	
-		
-	
-			
-truc = Matrix([[1.0, 5.0],[-4.0, 3.0]])
-truc2 = Matrix([[2.0, -1.0], [4.0, -1.0]])
+truc = Matrix([[1.0, 2.0, 3.0],[4.0, 5.0, 6.0]])
+truc2 = Matrix([[7.0, 8.0], [9.0, 10.0], [11.0, 12.0]])
 
-result = truc + truc2
+result = truc * truc2
 # print(truc.data, truc.shape)
 print (result.data)
