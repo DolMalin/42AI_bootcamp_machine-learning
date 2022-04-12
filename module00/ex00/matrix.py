@@ -58,7 +58,7 @@ def mul_matrices(a, b):
 			result[i][j] = dot_product(a[i], align_row(b, j))
 	return (result)
 
-# ============== ~ MATRIX ~ ============== #
+# ============== ~ CLASSES ~ ============== #
 
 class Matrix:
 	def __init__(self, input):
@@ -77,20 +77,17 @@ class Matrix:
 			self.data = input
 
 	def __add__(self, other):
-		assert isinstance(other, type(self))
-		assert self.shape == other.shape
+		assert isinstance(other, type(self) and self.shape == other.shape)
 		return Matrix(add_matrices(self.data, other.data))
 	
 	__radd__ = __add__
 	
 	def __sub__(self, other):
-		assert isinstance(other, type(self))
-		assert self.shape == other.shape
+		assert isinstance(other, type(self) and self.shape == other.shape)
 		return Matrix(sub_matrices(self.data, other.data))
 
 	def __rsub__(self, other):
-		assert isinstance(other, type(self))
-		assert self.shape == other.shape
+		assert isinstance(other, type(self) and self.shape == other.shape)
 		return Matrix(sub_matrices(other.data, self.data))
 
 	def __truediv__(self, other):
@@ -110,6 +107,17 @@ class Matrix:
 		self.shape = (self.shape[1], self.shape[0])
 		self.data = [list(row) for row in (zip(*self.data))]
 		return self
+
+
+class Vector(Matrix):
+	def __init__(self, input):
+		assert isinstance(input, list)
+	if len(input > 1):
+		for i in range(len(input)):
+			assert len(input[i]) == 1
+	# check tous les elem dans input sont bien des int
+	# elif len(input) == 1:
+
 
 truc = Matrix([[1.0, 2.0, 3.0],[4.0, 5.0, 6.0]])
 truc2 = Matrix([[7.0, 8.0], [9.0, 10.0], [11.0, 12.0]])
