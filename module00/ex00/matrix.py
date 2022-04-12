@@ -6,7 +6,7 @@
 #    By: pdal-mol <dolmalinn@gmail.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/12 10:54:32 by pdal-mol          #+#    #+#              #
-#    Updated: 2022/04/12 12:28:27 by pdal-mol         ###   ########.fr        #
+#    Updated: 2022/04/12 14:40:47 by pdal-mol         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,14 +25,31 @@ class Matrix:
 					assert isinstance(lst_elem, float)
 			self.shape = (len(input), len(input[0]))
 			self.data = input
+
+	def __add__(self, other):
+		assert isinstance(other, type(self))
+		assert self.shape == other.shape
+		result = self.data
+		for i in range (len(self.data)):
+			for j in range (self.shape[1]):
+				result[i][j] = self.data[i][j] + other.data[i][j]
+		return Matrix(result)
+	
+	__radd__ = __add__
+
 			
 	def T(self):
 		self.shape = (self.shape[1], self.shape[0])
+		self.data = [list(row) for row in (zip(*self.data))]
 		return self
+
+	
 		
-
+	
 			
-truc = Matrix([[0.0, 1.0], [2.0, 3.0], [4.0, 5.0]])
-print(truc.data, truc.shape)
+truc = Matrix([[1.0, 5.0],[-4.0, 3.0]])
+truc2 = Matrix([[2.0, -1.0], [4.0, -1.0]])
 
-print(truc.T().shape)
+result = truc + truc2
+# print(truc.data, truc.shape)
+print (result.data)
