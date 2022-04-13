@@ -30,6 +30,14 @@ def add_matrices(a, b):
 			result[i][j] = a[i][j] + b[i][j]
 	return result
 	
+def add_vectors(a, b):
+	if a.shape == b.shape:
+		result = create_matrix(len(a), len(a[0]))
+		for i in range (len(a)):
+			for j in range (len(a[0])):
+				result[i][j] = a[i][j] + b[i][j]
+		return result
+
 def sub_matrices(a, b):
 	result = create_matrix(len(a), len(a[0]))
 	for i in range (len(a)):
@@ -50,6 +58,24 @@ def mul_matrix_scalar(a, b):
 		for j in range (len(a[0])):
 			result[i][j] = a[i][j] * b
 	return result
+
+def	mul_matrix_vector(a, b):
+	if len(b) > 1:
+		result = create_matrix(len(a), len(b[0]))
+		for i in range (len(a)):
+			sum = 0
+			for j in range(len(b)):
+				sum += a[i][j] * b[j][0]
+			result[i][0] = sum
+		return result
+	else:
+		result = create_matrix(len(a), len(b))	
+		for i in range (len(a)):
+			sum = 0
+			for j in range(len(b[0])):
+				sum += a[i][j] * b[0][j]
+			result[i][0] = sum
+		return result
 
 def mul_matrices(a, b):
 	result = create_matrix(len(a), len(b[0]))
@@ -77,8 +103,11 @@ class Matrix:
 			self.data = input
 
 	def __add__(self, other):
-		assert isinstance(other, type(self) and self.shape == other.shape)
-		return Matrix(add_matrices(self.data, other.data))
+		if type(self) == Matrix and type(other) == Matrix:
+			assert isinstance(other, type(self) and self.shape == other.shape)
+			return Matrix(add_matrices(self.data, other.data))
+		elif type(self) == Vector and type(other) == Vector:
+			return Vector(add_matrices(self.data, other.data))
 	
 	__radd__ = __add__
 	
@@ -99,40 +128,33 @@ class Matrix:
 	def __mul__(self, other):
 		if isinstance(other, int) or isinstance(other, float):
 			return Matrix(mul_matrix_scalar(self.data, other))
-		elif isinstance(other, type(self)):
+		elif type(other) == Matrix and type(self) == Matrix:
 			assert self.shape[1] == other.shape[0] 
 			return (Matrix(mul_matrices(self.data, other.data)))
-	
+		elif type(self) == Matrix and type(other) == Vector:
+			return (Matrix(mul_matrix_vector(self.data, other.data)))
+
 	def T(self):
 		self.shape = (self.shape[1], self.shape[0])
 		self.data = [list(row) for row in (zip(*self.data))]
 		return self
 
-
 class Vector(Matrix):
 	def __init__(self, input):
 		assert isinstance(input, list)
-	if len(input > 1):
-		for i in range(len(input)):
-			assert len(input[i]) == 1
-	# check tous les elem dans input sont bien des int
-	# elif len(input) == 1:
+		if len(input) > 1:
+			for i in range(len(input)):
+				assert len(input[i]) == 1
+			self.data = input
+			self.shape = (len(input), 1)
+		elif (len(input) == 1):
+			assert len(input[0]) > 1 and len(input[0]) < 4
+			self.data = input
+			self.shape = (1, len(input[0]))
 
-
-truc = Matrix([[1.0, 2.0, 3.0],[4.0, 5.0, 6.0]])
-truc2 = Matrix([[7.0, 8.0], [9.0, 10.0], [11.0, 12.0]])
-
-m1 = Matrix([[0.0, 1.0, 2.0, 3.0],
-[0.0, 2.0, 4.0, 6.0]])
-
-m2 = Matrix([[0.0, 1.0],
-[2.0, 3.0],
-[4.0, 5.0],
-[6.0, 7.0]])
-
-m3 = Matrix([[0.0,1.0], [2.0,3.0], [4.0,5.0]])
-m4 = Matrix([[0.0,1.0], [2.0,3.0], [4.0,5.0]])
-result = m3 * 2
-print(result.data, result.shape)
-# print(truc.data, truc.shape)
-# print (Matrix((2, 3)).data)
+v1 = Vector([[1], [2], [3]])
+v2 = Vector([[2], [4], [8]])
+print((v1 + v2).data)
+# Output:
+# Output:
+# Matrix([[8], [16]])
