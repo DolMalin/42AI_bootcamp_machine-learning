@@ -102,7 +102,6 @@ def mul_vectors(a, b):
 
 # ============== ~ CLASSES ~ ============== #
 
-
 class Matrix:
 	def __init__(self, input):
 		assert type(input) == tuple or type(input) == list
@@ -120,6 +119,7 @@ class Matrix:
 			self.data = input
 
 	def __add__(self, other):
+		assert isinstance(other, Matrix)
 		if type(self) == Matrix and type(other) == Matrix:
 			assert self.shape == other.shape
 			return Matrix(add_matrices(self.data, other.data))
@@ -129,14 +129,17 @@ class Matrix:
 	__radd__ = __add__
 
 	def __sub__(self, other):
+		assert isinstance(other, Matrix)
 		assert type(other) == type(self) and self.shape == other.shape
 		return Matrix(sub_matrices(self.data, other.data))
 
 	def __rsub__(self, other):
+		assert isinstance(other, Matrix)
 		assert type(other) == type(self) and self.shape == other.shape
 		return Matrix(sub_matrices(other.data, self.data))
 
 	def __truediv__(self, other):
+		assert isinstance(other, Matrix)
 		assert type(other) == int or type(other) == float
 		return Matrix(div_matrix_scalar(self.data, other))
 
