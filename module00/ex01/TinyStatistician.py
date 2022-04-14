@@ -23,12 +23,17 @@ def get_median(input):
 		return (input[(math.floor(len(input) / 2))] + input[(math.floor(len(input) / 2)) - 1]) / 2
 	return float(input[math.floor(len(input) / 2)])
 
-# def	recursive_mean(input):
-# 	if type(input[0]) != list and type(input[0]) != np.ndarray:
-# 		for e in input:
-# 			assert isinstance(e, (int, float, complex, np.integer, np.float_))
-# 		return get_mean(input)
-# 	return recursive_mean([list_mean(e) for e in input])
+def q_pos(input, q):
+	return (len(input)) * q
+
+def get_quartile(input):
+	input.sort()
+	print(input)
+	q1 = input[math.floor(q_pos(input, 0.25))] if len(input) % 2 != 0 \
+	else (input[math.floor(q_pos(input, 0.25))] + input[math.floor(q_pos(input, 0.25)) - 1]) / 2 
+	q3 = input[math.floor(q_pos(input, 0.75))] if len(input) % 2 != 0 \
+	else (input[math.floor(q_pos(input, 0.75))] + input[math.floor(q_pos(input, 0.75)) - 1]) / 2
+	return (q1, q3)
 
 class TinyStatistician:
 
@@ -42,11 +47,23 @@ class TinyStatistician:
 			return None
 		return get_median(format_list(input))
 
+	def quartile(self, input):
+		if not check_input(format_list(input)):
+			return None
+		return get_quartile(format_list(input))
+
 
 b = np.array([1, 42, 300, 10, 59])
-c = np.array([[[2.0, 3.0, 4.0] ,[5.0, 6.0, 8.0], [4, 6, 9]], [[2.0, 3.0, 4.0] ,[5.0, 6.0, 8.0], [4, 6, 9]]])
+c = np.array([[[2.0, 3.0, 4.0] ,[5.0, 6.0, 8.0], [4, 6, 9]]])
+d = np.array([14, 15, 16, 17, 30, 32,  40, 44, 50, 52, 55, 57])
 
-a = [2, 4, 8]
+a = [1, 42, 300, 10, 59]
 
-print(np.median(a))
-print(TinyStatistician().median(a))
+
+f = [[14, 17, 12, 33, 44],   
+       [15, 6, 27, 8, 19],  
+       [23, 2, 54, 1, 4 ]]
+
+print(TinyStatistician().mean(a))
+# print(np.quantile(a, 1/4), np.quantile(a, 3/4))
+
