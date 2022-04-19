@@ -23,3 +23,8 @@ def predict_(x, theta):
 	if len(X[0]) != len(theta):
 		return None
 	return (np.matmul(X, theta))
+
+def plot(x, y, theta):
+	plt.scatter(x, y)
+	plt.plot(predict_(x, theta))
+	plt.show()
