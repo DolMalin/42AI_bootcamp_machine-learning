@@ -26,14 +26,23 @@ def get_median(input):
 def q_pos(input, q):
 	return (len(input)) * q
 
+def get_quantile(input, p):
+	input.sort()
+	if len(input) % 2 != 0:
+		return input[math.floor(q_pos(input, p))]
+	else:
+		 return (input[math.floor(q_pos(input, p))] + input[math.floor(q_pos(input, p)) - 1]) / 2 
+
 def get_quartile(input):
 	input.sort()
-	print(input)
-	q1 = input[math.floor(q_pos(input, 0.25))] if len(input) % 2 != 0 \
-	else (input[math.floor(q_pos(input, 0.25))] + input[math.floor(q_pos(input, 0.25)) - 1]) / 2 
-	q3 = input[math.floor(q_pos(input, 0.75))] if len(input) % 2 != 0 \
-	else (input[math.floor(q_pos(input, 0.75))] + input[math.floor(q_pos(input, 0.75)) - 1]) / 2
-	return (q1, q3)
+	return (get_quantile(input, 0.25), get_quantile(input, 0.75))
+
+
+def get_variance(input):
+	return sum((e - get_mean(input)) ** 2 for e in input) / len(input)
+
+def get_standard_deviation(input):
+	return math.sqrt(get_variance(input))
 
 class TinyStatistician:
 
@@ -52,18 +61,17 @@ class TinyStatistician:
 			return None
 		return get_quartile(format_list(input))
 
+	def percentile(self, input, p):
+		if not check_input(format_list(input)):
+			return None
+		return get_quantile(format_list(input), p)
 
-b = np.array([1, 42, 300, 10, 59])
-c = np.array([[[2.0, 3.0, 4.0] ,[5.0, 6.0, 8.0], [4, 6, 9]]])
-d = np.array([14, 15, 16, 17, 30, 32,  40, 44, 50, 52, 55, 57])
+	def var(self, input):
+		if not check_input(format_list(input)):
+			return None
+		return get_variance(format_list(input))
 
-a = [1, 42, 300, 10, 59]
-
-
-f = [[14, 17, 12, 33, 44],   
-       [15, 6, 27, 8, 19],  
-       [23, 2, 54, 1, 4 ]]
-
-print(TinyStatistician().mean(a))
-# print(np.quantile(a, 1/4), np.quantile(a, 3/4))
-
+	def std(self, input):
+		if not check_input(format_list(input)):
+			return None
+		return get_standard_deviation(input)
