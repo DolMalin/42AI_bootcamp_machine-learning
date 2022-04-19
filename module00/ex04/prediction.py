@@ -14,12 +14,12 @@ def add_intercept(x):
 
 def predict_(x, theta):
 	assert type(x) == np.ndarray and len(x) > 1
-	for e in x:
-		assert isinstance(e, (int, float, complex, np.integer, np.float_))
+	# for e in x:
+		# assert isinstance(e, (int, float, complex, np.integer, np.float_))
 	assert type(theta) == np.ndarray 
-	assert len(theta) == 2
-	for e in theta:
-		assert isinstance(e, (int, float, complex, np.integer, np.float_))
+	# assert len(theta) == 2
+	# for e in theta:
+		# assert isinstance(e, (int, float, complex, np.integer, np.float_))
 	X = add_intercept(x)
 	if len(X[0]) != len(theta):
 		return None
