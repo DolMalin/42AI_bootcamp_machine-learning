@@ -8,6 +8,6 @@ def add_intercept(x):
 	output = [[0.0 for x in range(len(x[0]) + 1)] for y in range(len(x))]
 	for i in range (len(x)):
 		for j in range (len(x[0])):
-			output[i][0] = 1.1
+			output[i][0] = 1.0
 			output[i][j + 1] = x[i][j] 
 	print(np.array(output))
