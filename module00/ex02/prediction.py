@@ -6,8 +6,6 @@ def simple_predict(x, theta):
 		assert isinstance(e, (int, float, complex, np.integer, np.float_))
 	assert type(theta) == np.ndarray 
 	assert len(theta) == 2
-	for e in theta:
-		assert isinstance(e, (int, float, complex, np.integer, np.float_))
 	output = [0.0 for x in range(len(x))]
 	for i in range(len(output)):
 		output[i] = float(theta[1] * x[i] + theta[0])
