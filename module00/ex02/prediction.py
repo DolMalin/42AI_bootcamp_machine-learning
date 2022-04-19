@@ -11,4 +11,4 @@ def simple_predict(x, theta):
 	output = [0.0 for x in range(len(x))]
 	for i in range(len(output)):
 		output[i] = float(theta[1] * x[i] + theta[0])
-	return (output)
+	return (np.array(output))
