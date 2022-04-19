@@ -174,7 +174,7 @@ class Vector(Matrix):
 			self.data = input
 			self.shape = (len(input), 1)
 		elif (len(input) == 1):
-			assert len(input[0]) > 1 and len(input[0]) < 4
+			assert len(input[0]) > 1
 			self.data = input
 			self.shape = (1, len(input[0]))
 
